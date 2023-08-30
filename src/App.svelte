@@ -1,5 +1,6 @@
 <script>
-  let point = 30;
+  let pageTitle = "2023年夏休み宿題計画";
+  let point = 70;
   let days = [
     "2023-07-21",
     "2023-07-22",
@@ -89,6 +90,7 @@
   }
 
   let syukudais = [
+    { title: "日誌（1ページ1ポイント）", point: 40 },
     { title: "自由研究", point: 20 },
     { title: "日記", point: 10 },
   ];
@@ -102,37 +104,56 @@
 </script>
 
 <main>
-  <h1>{chanzuke("りんか")}の表</h1>
-  <div>
-    <label
-      >夏休み開始日
-      <input name="startAt" type="date" bind:value={startAt} />
-    </label>
-    <label
-      >夏休み最終日
-      <input name="endAt" type="date" bind:value={endAt} />
-    </label>
-  </div>
+  <h1>{pageTitle}</h1>
 
-  <hr />
+  <div class="data_form no-print">
+    <div>
+      <input type="text" bind:value={pageTitle} />
+    </div>
 
-  {#each syukudais as syukudai}
     <div>
       <label
-        >宿題
-        <input type="text" bind:value={syukudai.title} />
+        >夏休み開始日
+        <input
+          class="start_at"
+          name="startAt"
+          type="date"
+          bind:value={startAt}
+        />
       </label>
-      <label>
-        <input type="number" bind:value={syukudai.point} />
+      <label
+        >夏休み最終日
+        <input class="end_at" name="endAt" type="date" bind:value={endAt} />
       </label>
     </div>
-  {/each}
 
-  <button on:click={addSyukudai}>宿題を追加</button>
+    {#each syukudais as syukudai}
+      <div>
+        <label
+          >宿題
+          <input class="title" type="text" bind:value={syukudai.title} />
+        </label>
+        <label>
+          <input class="point" type="number" bind:value={syukudai.point} />
+        </label>
+      </div>
+    {/each}
 
-  <button on:click={makeGraph}>表を作成</button>
+    <button on:click={addSyukudai}>宿題を追加する</button>
+
+    <hr />
+
+    <button on:click={makeGraph}>表を作成</button>
+  </div>
 
   <div class="container">
+    <div class="naiyou">
+      <ul>
+        {#each syukudais as shukudai}
+          <li>{shukudai.title}: {shukudai.point}</li>
+        {/each}
+      </ul>
+    </div>
     <div
       class="parent"
       style="grid-template-columns: repeat({days.length}, 1fr);"
@@ -154,18 +175,43 @@
   </div>
 </main>
 
-<!--  -->
-
 <style>
   /* このスタイルタグの中がｃｓｓ */
 
   /* このコンテナは表のいちばん外側の要素 */
   .container {
     border: 2px solid rgb(0, 0, 0);
+    position: relative;
+  }
+
+  .title {
+    width: 300px;
+  }
+
+  .point {
+    width: 60px;
   }
 
   .parent {
     display: grid;
+  }
+
+  .naiyou {
+    background-color: #fff;
+    position: absolute;
+    z-index: 9999;
+    text-align: left;
+    right: 30px;
+    top: 40px;
+  }
+
+  .naiyou ul {
+    list-style-type: none;
+    padding: 0 20px;
+  }
+
+  .naiyou li {
+    margin-left: 0;
   }
 
   .graph {
@@ -189,11 +235,14 @@
   }
 
   .miyasuiday {
-    font-size: 7px;
+    font-size: 5px;
+    min-height: 10px;
+    min-width: 20px;
+    border: 0.5px solid #333;
   }
 
   .cell {
-    min-height: 20px;
+    min-height: 10px;
     min-width: 20px;
     border: 1px solid #ddd;
   }
@@ -204,5 +253,11 @@
 
   .weekday-0 {
     background-color: #ffcbd6;
+  }
+
+  @media print {
+    .no-print {
+      display: none;
+    }
   }
 </style>
