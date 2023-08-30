@@ -1,5 +1,5 @@
 <script>
-  let pageTitle = "2023年夏休み宿題計画";
+  let pageTitle = "りんか：2023年夏休み宿題計画";
   let point = 70;
   let days = [
     "2023-07-21",
@@ -108,7 +108,10 @@
 
   <div class="data_form no-print">
     <div>
-      <input type="text" bind:value={pageTitle} />
+      <label
+        >グラフのタイトル
+        <input type="text" bind:value={pageTitle} />
+      </label>
     </div>
 
     <div>
